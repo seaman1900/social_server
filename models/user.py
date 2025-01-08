@@ -2,6 +2,16 @@ from pydantic import BaseModel
 from typing import List
 from datetime import datetime
 
+class Metadata(BaseModel):
+    followers: int
+    likes: int
+    dislikes: int
+
+class Profile(BaseModel):
+    bio: str
+    location: str
+    website: str
+
 # 用户模型
 class User(BaseModel):
     user_id: str
@@ -15,18 +25,19 @@ class User(BaseModel):
     permissions: List[str]
     avatar_url: str
     balance: float
-    profile: dict
+    profile: Profile
     shop_list: List[dict]
     mark_list: List[dict]
     payment_methods: List[str]
     investments: List[dict]
     orders: List[dict]
-    metadata: dict
+    metadata: Metadata
 
 # 注册请求模型
 class RegisterRequest(BaseModel):
     username: str
     email: str
+    avatar_url: str
     password: str
 
 # 登录请求模型
