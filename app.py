@@ -3,6 +3,7 @@ from fastapi import FastAPI
 from routers.router_user import router as user_router
 from routers.router_invest import router as invest_router
 from routers.router_print import router as print_router
+from routers.router_comment import router as comment_router
 
 app = FastAPI()
 
@@ -10,7 +11,7 @@ app = FastAPI()
 app.include_router(user_router)
 app.include_router(print_router)
 app.include_router(invest_router)
-
+app.include_router(comment_router)
 
 # 根路由
 @app.get("/")
