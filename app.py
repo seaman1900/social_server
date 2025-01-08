@@ -1,11 +1,16 @@
 import uvicorn
 from fastapi import FastAPI
 from routers.router_user import router as user_router
+from routers.router_invest import router as invest_router
+from routers.router_print import router as print_router
 
 app = FastAPI()
 
 # 挂载路由
 app.include_router(user_router)
+app.include_router(print_router)
+app.include_router(invest_router)
+
 
 # 根路由
 @app.get("/")
@@ -14,4 +19,4 @@ async def root():
 
 # uvicorn app:app --reload
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="127.0.0.1", port=8000, reload=True, workers=1)

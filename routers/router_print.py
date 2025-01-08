@@ -1,8 +1,9 @@
 from fastapi import APIRouter, HTTPException, Path
 from typing import List, Dict
 from models.print import Print
+from tools.misc import generate_content_id
 
-router = APIRouter(prefix="/prints", tags=["users"])
+router = APIRouter(prefix="/print", tags=["users"])
 
 # 模拟数据库
 fake_prints_db: Dict[str, Print] = {}
@@ -24,8 +25,10 @@ async def get_print(content_id: str = Path(..., description="The ID of the print
 async def create_print(print_data: Print):
     if print_data.content_id in fake_prints_db:
         raise HTTPException(status_code=400, detail="Print with this ID already exists")
-    
-    fake_prints_db[print_data.content_id] = print_data
+    # 生成unique content
+    print_id = generate_content_id(print_data.title, print_data.author_id)
+    print_data.content_id = print_id
+    fake_prints_db[print_id] = print_data
     return print_data
 
 # 更新付费内容

@@ -1,12 +1,13 @@
 from fastapi import APIRouter
-
-from models.user import User, RegisterRequest, LoginRequest, PurchaseRequest, RechargeRequest
-
 from fastapi import HTTPException
 from datetime import datetime
 import hashlib
 
-router = APIRouter(prefix="/users", tags=["users"])
+from models.user import User, RegisterRequest, LoginRequest, PurchaseRequest, RechargeRequest
+from tools.misc import generate_user_id
+
+
+router = APIRouter(prefix="/user", tags=["users"])
 
 # 模拟数据库
 fake_db = {}
@@ -22,7 +23,7 @@ async def register(user: RegisterRequest):
         raise HTTPException(status_code=400, detail="Username already exists")
     
     hashed_password = hash_password(user.password)
-    user_id = hashlib.sha256(user.username.encode()).hexdigest()
+    user_id = generate_user_id(user.username)
     
     new_user = User(
         user_id=user_id,

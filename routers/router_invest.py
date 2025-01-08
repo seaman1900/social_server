@@ -1,8 +1,9 @@
+from typing import List, Dict
 from fastapi import APIRouter
 from fastapi import HTTPException, Path
 
 from models.invest import Investment
-from typing import List, Dict
+from tools.misc import generate_investment_id
 
 router = APIRouter(prefix="/invest", tags=["users"])
 
@@ -14,12 +15,13 @@ fake_investments_db: Dict[str, Investment] = {}
 async def create_investment(investment: Investment):
     if investment.invest_id in fake_investments_db:
         raise HTTPException(status_code=400, detail="Investment with this ID already exists")
-    
+    invest_id = generate_investment_id(investment.user_id, investment.content_id, investment.invest_time, investment.invest_amount)
+    investment.invest_id = invest_id
     fake_investments_db[investment.invest_id] = investment
     return investment
 
 # 获取用户的所有投资
-@router.get("/users/{user_id}", response_model=List[Investment])
+@router.get("/user/{user_id}", response_model=List[Investment])
 async def get_user_investments(user_id: str):
     user_investments = [inv for inv in fake_investments_db.values() if inv.user_id == user_id]
     if not user_investments:
