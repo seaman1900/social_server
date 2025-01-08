@@ -21,7 +21,7 @@ async def get_print(content_id: str = Path(..., description="The ID of the print
     return fake_prints_db[content_id]
 
 # 创建付费内容
-@router.post("/", response_model=Print)
+@router.post("/create", response_model=Print)
 async def create_print(print_data: Print):
     if print_data.content_id in fake_prints_db:
         raise HTTPException(status_code=400, detail="Print with this ID already exists")
@@ -32,7 +32,7 @@ async def create_print(print_data: Print):
     return print_data
 
 # 更新付费内容
-@router.put("/{content_id}", response_model=Print)
+@router.put("/update/{content_id}", response_model=Print)
 async def update_print(content_id: str, print_data: Print):
     if content_id not in fake_prints_db:
         raise HTTPException(status_code=404, detail="Print not found")
@@ -41,7 +41,7 @@ async def update_print(content_id: str, print_data: Print):
     return print_data
 
 # 删除付费内容
-@router.delete("/{content_id}", response_model=Dict[str, str])
+@router.delete("/delete/{content_id}", response_model=Dict[str, str])
 async def delete_print(content_id: str):
     if content_id not in fake_prints_db:
         raise HTTPException(status_code=404, detail="Print not found")

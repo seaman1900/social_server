@@ -11,7 +11,7 @@ router = APIRouter(prefix="/invest", tags=["users"])
 fake_investments_db: Dict[str, Investment] = {}
 
 # 创建投资
-@router.post("/", response_model=Investment)
+@router.post("/create", response_model=Investment)
 async def create_investment(investment: Investment):
     if investment.invest_id in fake_investments_db:
         raise HTTPException(status_code=400, detail="Investment with this ID already exists")
