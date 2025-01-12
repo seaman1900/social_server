@@ -3,9 +3,9 @@ from fastapi import APIRouter
 from fastapi import HTTPException, Path
 
 from models.invest import Investment
-from tools.misc import generate_investment_id
+from wrench.misc import generate_investment_id
 
-router = APIRouter(prefix="/invest", tags=["users"])
+router = APIRouter(prefix="/invest", tags=["investments"])
 
 # 模拟数据库
 fake_investments_db: Dict[str, Investment] = {}
@@ -15,7 +15,7 @@ fake_investments_db: Dict[str, Investment] = {}
 async def create_investment(investment: Investment):
     if investment.invest_id in fake_investments_db:
         raise HTTPException(status_code=400, detail="Investment with this ID already exists")
-    invest_id = generate_investment_id(investment.user_id, investment.content_id, investment.invest_time, investment.invest_amount)
+    invest_id = generate_investment_id(investment.user_id, investment.print_id, investment.invest_time, investment.invest_amount)
     investment.invest_id = invest_id
     fake_investments_db[investment.invest_id] = investment
     return investment

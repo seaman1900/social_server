@@ -7,11 +7,6 @@ class Metadata(BaseModel):
     likes: int
     dislikes: int
 
-class Profile(BaseModel):
-    bio: str
-    location: str
-    website: str
-
 # 用户模型
 class User(BaseModel):
     user_id: str
@@ -20,18 +15,17 @@ class User(BaseModel):
     password_hash: str
     registration_date: datetime
     last_login: datetime
-    is_admin: bool
-    roles: List[str]
-    permissions: List[str]
+    role: List[str]
     avatar_url: str
-    balance: float
-    profile: Profile
-    shop_list: List[dict]
     mark_list: List[dict]
-    payment_methods: List[str]
-    investments: List[dict]
-    orders: List[dict]
+    wish_list: List[dict]
     metadata: Metadata
+
+
+# 登录请求模型
+class LoginRequest(BaseModel):
+    username: str
+    password: str
 
 # 注册请求模型
 class RegisterRequest(BaseModel):
@@ -40,19 +34,9 @@ class RegisterRequest(BaseModel):
     avatar_url: str
     password: str
 
-# 登录请求模型
-class LoginRequest(BaseModel):
+# 更新用户信息请求模型
+class UpdateUserRequest(BaseModel):
     username: str
+    email: str
+    avatar_url: str
     password: str
-
-# 购买请求模型
-class PurchaseRequest(BaseModel):
-    user_id: str
-    content_id: str
-    amount: float
-
-# 充值请求模型
-class RechargeRequest(BaseModel):
-    user_id: str
-    amount: float
-    payment_method: str

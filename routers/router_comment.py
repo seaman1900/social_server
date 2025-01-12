@@ -3,7 +3,7 @@ from fastapi import HTTPException, Path
 from models.comment import Comment
 from fastapi import APIRouter
 
-router = APIRouter()
+router = APIRouter(prefix="/comment", tags=["comments"])
 
 # 模拟数据库
 fake_comments_db: Dict[str, Comment] = {}
@@ -27,7 +27,7 @@ async def get_comment(comment_id: str = Path(..., description="The ID of the com
 # 获取某个评论的所有回复
 @router.get("/{comment_id}/replies", response_model=List[Comment])
 async def get_replies(comment_id: str):
-    replies = [comment for comment in fake_comments_db.values() if comment.parent_comment_id == comment_id]
+    replies = [comment for comment in fake_comments_db.values() if comment.parent_id == comment_id]
     return replies
 
 # 更新评论

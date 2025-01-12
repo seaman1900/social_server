@@ -7,18 +7,16 @@ class PrintMetadata(BaseModel):
     comments: int
     likes: int
     dislikes: int
-    shares: int
+    total_invest: int
 
 class Print(BaseModel):
-    content_id: str
-    title: str
+    print_id: str
     author_id: str
+    title: str
     created_at: datetime
-    price: float
+    price: int
     description: str
-    content_body: str
+    body: str
     metadata: PrintMetadata
-    pricing_type: str
     tags: List[str]
-    comments: List[str]
     status: str

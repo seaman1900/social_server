@@ -6,7 +6,7 @@ def generate_user_id(username: str) -> str:
     unique_string = f"{username}_{datetime.now().isoformat()}"
     return hashlib.sha256(unique_string.encode()).hexdigest()[:8]  # 取前8位作为ID
 
-def generate_content_id(title: str, author_id: str) -> str:
+def generate_print_id(title: str, author_id: str) -> str:
     # 基于标题、作者ID和时间戳生成哈希值
     unique_string = f"{title}_{author_id}_{datetime.now().isoformat()}"
     return hashlib.sha256(unique_string.encode()).hexdigest()[:8]  # 取前8位作为ID
