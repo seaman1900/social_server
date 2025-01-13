@@ -4,6 +4,8 @@ from fastapi import HTTPException, Path
 
 from models.invest import Investment
 from wrench.misc import generate_investment_id
+from datetime import datetime
+from loguru import logger
 
 router = APIRouter(prefix="/invest", tags=["investments"])
 
@@ -11,14 +13,16 @@ router = APIRouter(prefix="/invest", tags=["investments"])
 fake_investments_db: Dict[str, Investment] = {}
 
 # 创建投资
-@router.post("/create", response_model=Investment)
+@router.post("/create")
 async def create_investment(investment: Investment):
+    logger.info(f"user {investment.user_id} create investment {investment.invest_type} at:{investment.print_id} amount:{investment.invest_amount}")
     if investment.invest_id in fake_investments_db:
         raise HTTPException(status_code=400, detail="Investment with this ID already exists")
     invest_id = generate_investment_id(investment.user_id, investment.print_id, investment.invest_time, investment.invest_amount)
     investment.invest_id = invest_id
+    investment.profit = 0.0
     fake_investments_db[investment.invest_id] = investment
-    return investment
+    return investment.model_dump()
 
 # 获取用户的所有投资
 @router.get("/user/{user_id}", response_model=List[Investment])
